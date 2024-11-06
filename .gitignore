@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+
+dist
+node_modules
+chords
+
+.env
+temp/*
+ormconfig.js
+dump.rdb
+test-outputs
