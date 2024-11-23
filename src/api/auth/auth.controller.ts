@@ -10,6 +10,7 @@ export class AuthController {
 
   @Post('login')
   async authenticateUser(@Body() body): Promise<any> {
+    console.log('/login')
     return await this.authService.validateUser(body.email, body.password);
   }
 

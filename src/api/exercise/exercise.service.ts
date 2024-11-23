@@ -39,12 +39,12 @@ export class ExerciseService {
         whereClause.name = Like('%' + searchOpts.query + '%');
       }
 
-      if (searchOpts.muscleGroupId) {
-        whereClause.muscleGroupId = searchOpts.muscleGroupId;
+      if (+searchOpts.muscleGroupId) {
+        whereClause.muscleGroupId = +searchOpts.muscleGroupId;
       }
 
-      if (searchOpts.equipmentId) {
-        whereClause.equipmentId = searchOpts.equipmentId;
+      if (+searchOpts.equipmentId) {
+        whereClause.equipmentId = +searchOpts.equipmentId;
       }
 
       const exercises: any[] = await this.exerciseRepository.find({
@@ -74,6 +74,32 @@ export class ExerciseService {
       }
 
       return ResponseBuilder(exercises);
+    } catch (err) {
+      return ResponseBuilder(null, null, true, {
+        error: err,
+        log: true
+      });
+    }
+  }
+
+  async getMuscleGroups() {
+    try {
+      const muscleGroups = await this.exerciseMuscleGroupRepository.find();
+
+      return ResponseBuilder(muscleGroups);
+    } catch (err) {
+      return ResponseBuilder(null, null, true, {
+        error: err,
+        log: true
+      });
+    }
+  }
+
+  async getEquipment() {
+    try {
+      const equipment = await this.exerciseEquipmentRepository.find();
+
+      return ResponseBuilder(equipment);
     } catch (err) {
       return ResponseBuilder(null, null, true, {
         error: err,

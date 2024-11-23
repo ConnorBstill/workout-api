@@ -13,9 +13,18 @@ export class ExerciseController {
   constructor(private readonly exerciseService: ExerciseService) {}
 
   @Get()
-  // @MinRole(ROLE.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getExercises(@Req() req, @Query() query): Promise<any> {
     return await this.exerciseService.getExercises(req.user.id, query);
+  }
+
+  @Get('muscle-group')
+  async getMuscleGroups(): Promise<any> {
+    return await this.exerciseService.getMuscleGroups();
+  }
+
+  @Get('equipment')
+  async getEquipment(): Promise<any> {
+    return await this.exerciseService.getEquipment();
   }
 }
