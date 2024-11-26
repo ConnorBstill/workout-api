@@ -9,6 +9,8 @@ import { WorkoutExercise } from '../../common/entities/workout-exercise.entity';
 import { Repository } from 'typeorm';
 import { createMySqlDateEntered } from '../../common/utils/common';
 
+import { Exercise } from '../../common/types/workout.types'
+
 @Injectable()
 export class WorkoutService {
   constructor(
@@ -18,7 +20,6 @@ export class WorkoutService {
     @InjectRepository(WorkoutExercise)
     private readonly workoutExerciseRepository: Repository<WorkoutExercise>
   ) {}
-  z;
 
   async getWorkouts(refUserId: number): Promise<ResponseBuilderData<any>> {
     try {
@@ -125,7 +126,7 @@ export class WorkoutService {
     }
   }
 
-  async setWorkoutExercises(refUserId: number, workoutId: number, payload): Promise<ResponseBuilderData<any>> {
+  async setWorkoutExercises(refUserId: number, workoutId: number, payload: Exercise[]): Promise<ResponseBuilderData<any>> {
     try {
       await this.workoutExerciseRepository
         .createQueryBuilder()
@@ -135,8 +136,8 @@ export class WorkoutService {
         })
         .execute();
 
-      for (let i = 0; i < payload.items.length; i++) {
-        const item = payload.items[i];
+      for (let i = 0; i < payload.length; i++) {
+        const { name, weight, repsPerSet, sets, restTime, restTimeUnit } = payload[i];
 
         await this.workoutExerciseRepository
           .createQueryBuilder()
@@ -145,11 +146,12 @@ export class WorkoutService {
           .values([
             {
               workoutId,
-              name: item.name,
-              weight: item.weight,
-              repsPerSet: item.repsPerSet,
-              sets: item.sets,
-              restTime: item.restTime,
+              name,
+              weight,
+              repsPerSet,
+              sets,
+              restTime,
+              restTimeUnit,
               dateEntered: createMySqlDateEntered()
             }
           ])

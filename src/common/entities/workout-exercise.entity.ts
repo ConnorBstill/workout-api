@@ -36,6 +36,11 @@ export class WorkoutExercise {
   restTime: number;
 
   @Column({
+    name: 'rest_time_unit'
+  })
+  restTimeUnit: 's' | 'm';
+
+  @Column({
     name: 'date_entered'
   })
   dateEntered: string;
